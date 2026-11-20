@@ -1,0 +1,16 @@
+{
+  "appId": "com.alfonsojessussnchz.retorno",
+  "appName": "Retorno",
+  "webDir": "www",
+  "backgroundColor": "#16498a",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#16498a",
+    "scrollEnabled": true
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "iconColor": "#ff6a2b"
+    }
+  }
+}

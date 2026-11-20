@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#16498a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Retorno">
+  <title>Retorno</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M2 16V7h11v9M13 10h4l4 4v2h-8"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17" cy="17.5" r="2"/></svg></div>
+    <h1>Retorno</h1>
+    <span class="src" id="src"></span>
+  </header>
+
+  <main id="view"></main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <nav class="tabbar">
+    <button data-tab="trips"><svg viewBox="0 0 24 24"><path d="M2 16V7h11v9M13 10h4l4 4v2h-8"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17" cy="17.5" r="2"/></svg><span>Viajes</span></button>
+    <button data-tab="filters"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span></button>
+    <button data-tab="companies"><svg viewBox="0 0 24 24"><path d="M3 21V8l6-4v17M9 21h12V10l-6-3M13 12h4M13 16h4"/></svg><span>Empresas</span></button>
+  </nav>
+
+  <script src="js/config.js"></script>
+  <script src="js/geo.js"></script>
+  <script src="js/ranking.js"></script>
+  <script src="js/sources/mock.js"></script>
+  <script src="js/sources/timocom.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/native.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  </script>
+</body>
+</html>

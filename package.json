@@ -1,0 +1,25 @@
+{
+  "name": "retorno",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Retorno · cargas de retorno cerca de ti cuando vas vacío",
+  "scripts": {
+    "test": "node test/ranking.test.mjs",
+    "build": "node scripts/build-www.mjs",
+    "ios": "npm run build && node scripts/ios-setup.mjs && npx cap open ios",
+    "sync": "npm run build && npx cap sync ios",
+    "server": "node server/timocom-proxy.mjs"
+  },
+  "dependencies": {
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/geolocation": "8.2.5",
+    "@capacitor/haptics": "8.0.2",
+    "@capacitor/ios": "8.6.2",
+    "@capacitor/local-notifications": "8.3.1",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2"
+  }
+}
