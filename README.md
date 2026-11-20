@@ -1,97 +1,90 @@
-# Retorno · beta 0.1
+<div align="center">
 
-App para transportistas. Cuando descargas, pulsas **ESTOY VACÍO**: coge tu GPS, busca cargas en el radio que elijas
-hacia los destinos que quieras y te las ordena por **€/km real** (contando los km en vacío hasta el punto de carga).
+<img src="icons/icon-512.png" alt="Retorno" width="120">
 
-Está montada igual que Mfit: HTML + CSS + JavaScript sin compilación, instalable como app (PWA) y con proyecto nativo
-de iPhone con Capacitor.
+# Retorno
 
-**Fuente de cargas:** TIMOCOM (API *Freight Exchange Search*). Mientras llega el acceso funciona con una
-**TIMOCOM simulada** (`CONFIG.source = 'mock'` en `js/config.js`): las cargas, empresas y contactos son ficticios.
+**Descargas, pulsas «Vacío» y te busca el viaje de vuelta.**
 
-## Cómo probarla
+App para transportistas que encuentra cargas de retorno cerca de donde estás y te las ordena por lo que de verdad te dejan en el bolsillo.
 
-**En el Mac:**
+![Beta](https://img.shields.io/badge/estado-base%20beta%200.1-ff6a2b?style=flat)
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![Capacitor](https://img.shields.io/badge/Capacitor-119EFF?style=flat&logo=capacitor&logoColor=white)
+![Bolsa](https://img.shields.io/badge/bolsa-TIMOCOM-16498a?style=flat)
+
+**[▶ Abrir la app](https://alfonsojessussnchz.github.io/retorno/)**
+
+</div>
+
+---
+
+> 🧪 **En base beta.** Todo funciona, pero las cargas son de una **TIMOCOM simulada** (empresas, precios y contactos ficticios) hasta tener acceso a la API real.
+
+## 🚛 De qué va esto
+
+Cuando un camionero descarga, lo que más le cuesta es encontrar el retorno. Retorno lo hace de un toque: coge tu ubicación, mira las cargas en el radio que elijas, se queda con las que van hacia donde tú quieres y te las ordena por **€/km real**, contando los kilómetros en vacío hasta el punto de carga.
+
+Está hecha a mano, igual que Mfit: HTML, CSS y JavaScript, sin compilación.
+
+## ✨ Lo más chulo
+
+- **Botón ESTOY VACÍO.** Un toque: GPS, búsqueda y ranking. Sin escribir nada.
+- **Radar.** Tú en el centro, el círculo de tu radio y cada carga con su puesto y una rayita hacia donde va.
+- **Nota sobre 100 que se explica sola.** €/km real (50), cercanía (20), destino (15), fecha (10) y empresa (5). Cada oferta te dice por qué tiene esa nota.
+- **Filtros de camionero de verdad:** tipo de caja, toneladas, metros lineales, ADR, destinos y cuánto te puede dejar de lejos.
+- **Modo «Avísame».** Sigue buscando y, si sale algo en tu top 3, vibra y te manda una notificación.
+- **Empresas favoritas y bloqueadas.** Las buenas suben y las que no quieres no vuelven a salir.
+- **Juega con las normas de TIMOCOM:** máximo 30 ofertas por búsqueda, el contacto se pide aparte, contador de consultas y las ofertas nunca se guardan en el móvil.
+
+## 🗂️ Estructura
+
+```
+├── index.html               → estructura y pestañas (Viajes, Filtros, Empresas)
+├── css/styles.css           → diseño (azul autovía y naranja baliza)
+├── js/
+│   ├── config.js            → simulada o real, servidor puente, consultas, avisos
+│   ├── geo.js               → ciudades, destinos y distancias
+│   ├── ranking.js           → el motor: filtros y nota
+│   ├── sources/timocom.js   → conector de TIMOCOM y formato común de oferta
+│   ├── sources/mock.js      → TIMOCOM simulada
+│   ├── store.js             → ajustes, favoritas y contador
+│   ├── native.js            → GPS, vibración y notificaciones
+│   └── app.js               → pantallas y acciones
+├── server/timocom-proxy.mjs → servidor puente (las claves de TIMOCOM van aquí, no en el móvil)
+├── test/                    → pruebas del motor (npm test)
+└── scripts/                 → app nativa de iPhone (igual que Mfit)
+```
+
+## 🛠️ Cómo tocarla
+
+**Verla en local:**
 ```bash
 cd ~/"m3 way/Retorno"
 python3 -m http.server 8001
 ```
-Abre `http://localhost:8001` en Chrome (`Cmd+Opt+I` → icono de móvil). El GPS funciona en `localhost`.
+Y abre `http://localhost:8001` en Chrome. (El 8000 lo usa Mfit.)
 
-**En el móvil:** súbela a GitHub Pages (HTTPS, necesario para el GPS) → iPhone → Compartir → «Añadir a pantalla de inicio».
+**Cambiar cómo puntúa:** `js/ranking.js`. **Pasar a TIMOCOM real:** rellenar los `TODO` de `server/timocom-proxy.mjs`, arrancarlo en el VPS y en `js/config.js` poner `source: 'api'`, `apiBase` y `appToken`.
 
-**Pruebas del motor:** `npm test`
+> ⚠️ El repo es público: las credenciales de TIMOCOM y el token nunca se suben, van solo en el servidor.
 
-## App nativa para iPhone (Capacitor)
+## 📱 Ponerla en el iPhone
 
-```bash
-cd ~/"m3 way/Retorno"
-npm install        # la primera vez
-npm run ios        # prepara www/, crea el proyecto de Xcode, pone icono y permiso de ubicación, y abre Xcode
-```
-En Xcode: elige tu iPhone → *Signing & Capabilities* → *Team* → ▶ (igual que con Mfit).
-Tras cambiar código web: `npm run sync` y ▶.
+**Como web app (sin Xcode):** abre [la app](https://alfonsojessussnchz.github.io/retorno/) en Safari → Compartir → *Añadir a pantalla de inicio*. Pide permiso de ubicación la primera vez.
 
-Funciones nativas (`js/native.js`): GPS con permiso de iOS, vibración y notificación cuando el modo «Avísame»
-encuentra una carga nueva en tu top 3.
+**Como app nativa:** `npm install` y `npm run ios`, y ▶ en Xcode, igual que con Mfit.
 
-## Cómo se conecta con TIMOCOM
+## 📝 Cambios
 
-```
-App (móvil) ──X-App-Token──▶ servidor puente (tu VPS) ──credenciales──▶ TIMOCOM
-```
-Las credenciales de TIMOCOM **nunca** van en la app: viven en el servidor puente (`server/timocom-proxy.mjs`,
-Node 22 sin dependencias).
+- **0.1** — Primera beta: botón Vacío con GPS, radar, filtros de destino y camión, ranking por €/km real, búsqueda en 2 pasos al estilo TIMOCOM, contador de consultas, favoritas/bloqueadas, modo «Avísame» y servidor puente preparado.
 
-Cuando llegue la documentación:
-1. Rellenar los `TODO` de `server/timocom-proxy.mjs` (búsqueda por área, traducción al formato común y contacto).
-2. Arrancarlo en el VPS: `APP_TOKEN=... TIMOCOM_BASE=... TIMOCOM_USER=... TIMOCOM_PASSWORD=... npm run server`
-3. En `js/config.js`: `source: 'api'`, `apiBase` (la URL del servidor) y `appToken` (el mismo `APP_TOKEN`).
-4. Ajustar `dailyQuota` al contingente que te den.
+---
 
-## Normas de TIMOCOM que ya respeta
+<div align="center">
 
-- **Máximo 30 ofertas** por búsqueda, anónimas (empresa, ID TIMOCOM y CIF).
-- **Contacto en un segundo paso** («Ver contacto»), que cuenta como consulta.
-- **Contador de consultas** diario.
-- **Datos de ofertas solo en memoria:** no se guardan en el móvil; se borran al cerrar la app y las caducadas
-  (día de carga pasado) se descartan.
-- **Listas propias** de empresas favoritas y bloqueadas.
-- **«Avísame»** consulta cada 5 min mientras la app está abierta (en modo simulado, cada 15 s).
+Hecha pensando en los que vuelven de vacío 🛣️
 
-## Cómo puntúa (sobre 100)
-
-| Parte | Puntos | Cálculo |
-|---|---|---|
-| €/km real | 50 | precio ÷ (km en vacío + km cargado); 0,60 €/km = 0 y 1,40 €/km = 50. Sin precio: 25 |
-| Cercanía | 20 | cuanto más cerca de ti esté la carga dentro del radio |
-| Destino | 15 | cuanto más cerca te deje de la ciudad que quieres, dentro del margen |
-| Fecha | 10 | hoy 10, mañana 6, después 2 |
-| Empresa | 5 | favorita 5, normal 2,5 |
-
-Se descartan: fuera de radio, destino no buscado, otra caja, no cabe (t o metros), ADR si no tienes, bloqueadas y caducadas.
-Distancias: línea recta × 1,22 (`CONFIG.roadFactor`) hasta tener rutas reales.
-
-## Estructura
-
-```
-index.html               estructura y barra de pestañas (Viajes, Filtros, Empresas)
-css/styles.css           estilos (azul autovía, naranja baliza)
-js/config.js             fuente (mock/api), servidor puente, contingente, avisos
-js/geo.js                ciudades, destinos y distancias
-js/ranking.js            el motor: filtros y puntuación (no depende de la bolsa)
-js/sources/timocom.js    conector de TIMOCOM y formato común de oferta
-js/sources/mock.js       TIMOCOM simulada
-js/store.js              ajustes, favoritas/bloqueadas y contador (localStorage)
-js/native.js             GPS, vibración y notificaciones (Capacitor)
-js/app.js                pantallas y acciones
-server/timocom-proxy.mjs servidor puente (rellenar con la documentación de TIMOCOM)
-test/ranking.test.mjs    pruebas del motor y de la bolsa simulada
-scripts/                 build-www.mjs e ios-setup.mjs (igual que Mfit + permiso de ubicación)
-```
-
-## Cambios
-
-- **0.1** — Primera beta: botón Vacío con GPS, radar, filtros de destino y camión, ranking por €/km real,
-  búsqueda en 2 pasos al estilo TIMOCOM, contador de consultas, favoritas/bloqueadas, modo «Avísame»,
-  servidor puente preparado.
+</div>
